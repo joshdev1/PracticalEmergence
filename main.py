@@ -53,8 +53,3 @@ for epoch in range(EPOCHS):
 plot_supervenient_feature(range(EPOCHS), vt_trace, 1)
 plot_supervenient_feature(range(EPOCHS), total_mean_vt_trace, 2)
 plt.show()
-
-# plot_membrane_potential(neuron_num="1", time_steps=EPOCHS, membrane_trace=membrane_trace[0], figure_num=1)
-# plot_membrane_potential(neuron_num="2", time_steps=EPOCHS, membrane_trace=membrane_trace[1], figure_num=2)
-# plot_supervenient_feature(EPOCHS, vt_trace, 3)
-# plt.show()
