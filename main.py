@@ -15,7 +15,7 @@ total_mean_vt_trace = []
 
 lif_neuron = LIFNeuron(3e-9, 0.1e-3, 15e-3)  # lif neuron for calculating membrane potentials
 # TODO add a random input current to each neuron to compare with this value
-mem_vector = np.vectorize(lif_neuron.get_membrane_potential)  # apply membrane potential calculation to numpy array
+update_membrane_potentials = np.vectorize(lif_neuron.get_membrane_potential)  # apply membrane potential calculation to numpy array
 
 
 def get_vt_trace(vt_trace, vt):
@@ -29,9 +29,8 @@ def get_vt(vt, xt):
 
 
 def get_xt(xt):
-    x = mem_vector(xt[:, 1])
-    xt[:, 0] = xt[:, 1]  # update first column with the second columns values (old xt+1 values)
-    xt[:, 1] = x         # update second column with new xt+1 values
+    xt[:, 0] = xt[:, 1]                              # update first column (t-1) with the values from t
+    xt[:, 1] = update_membrane_potentials(xt[:, 1])  # update second column (t) with new membrane potential values
 
 
 EPOCHS = 3
