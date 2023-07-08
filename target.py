@@ -5,12 +5,12 @@ from oct2py import Oct2Py
 from graph import plot_practical_criteria
 import random
 
-from utils import get_xt, get_vt_trace, get_spatial_vt
+from vt import get_xt, get_vt_trace, get_spatial_vt
 
 oc = Oct2Py()
 oc.addpath('D:\Projects\PracticalEmergence\ReconcilingEmergences-master\ReconcilingEmergences-master')
 
-ca = "ca3_d1_21"
+ca = "ca3_d1_30"
 file = open(f"data_sets/Dataset1/timelocked_data/{ca}.txt", "r")
 data = file.readlines()
 file.close()

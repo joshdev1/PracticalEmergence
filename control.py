@@ -1,17 +1,16 @@
 from matplotlib import pyplot as plt
-from format_ca_data import format_data, get_normalised_rate, get_estr_and_ovlps, get_control
+from format_ca_data import format_data, get_normalised_rate, get_control
 import numpy as np
 from oct2py import Oct2Py
 from graph import plot_practical_criteria
-import random
 
-from utils import get_xt, get_vt_trace, get_spatial_vt
+from vt import get_xt, get_vt_trace, get_spatial_vt
 
 oc = Oct2Py()
 oc.addpath('D:\Projects\PracticalEmergence\ReconcilingEmergences-master\ReconcilingEmergences-master')
 
-ca = "ca1_control_1"
-file = open(f"data_sets/Dataset1/control_data/ca1_control.txt", "r")
+ca = "ca1_control_30"
+file = open(f"data_sets/Dataset1/control_data/{ca}.txt", "r")
 data = file.readlines()
 file.close()
 
@@ -27,7 +26,6 @@ vt_trace = []
 total_mean_vt_trace = []
 
 rates_level = get_normalised_rate(est_rates)
-# ca_activation_level = get_ca_activation_level(ovlps, CA_SIZE)
 # random.shuffle(est_rates)  # shuffle the data for surrogate testing/resampling
 
 psi_trace = []
@@ -68,11 +66,10 @@ with open(f'data_sets/Dataset1/control_results/{ca}_res.txt', 'w') as f:
 
 
 plt.figure(1)
-plot_practical_criteria(len(est_rates) - 1, psi_trace, "psi", "Firing Rate")
-plot_practical_criteria(len(est_rates) - 1, delta_trace, "delta", "Firing Rate")
-plot_practical_criteria(len(est_rates) - 1, gamma_trace, "gamma", "Firing Rate")
+plot_practical_criteria(len(est_rates) - 1, psi_trace, "psi", "Firing rate - Control Condition")
+plot_practical_criteria(len(est_rates) - 1, delta_trace, "delta", "Firing rate - Control Condition")
+plot_practical_criteria(len(est_rates) - 1, gamma_trace, "gamma", "Firing rate - Control Condition")
 plt.plot(range(len(est_rates) - 1), rates_level[:len(est_rates) - 1], label="Firing Rates")
-# plt.plot(range(len(ovlps) - 1), ca_activation_level[:len(ovlps) - 1], label="ca activation (ovlps)")
 plt.legend()
 
 plt.show()

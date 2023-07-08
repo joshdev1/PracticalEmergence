@@ -1,3 +1,5 @@
+import math
+
 def get_potentials_and_ca_ovlps(data):
     raw_potentials = []
     raw_ca1_ovlps = []
@@ -45,34 +47,11 @@ def format_data(data):
     return formatted_data
 
 
-# def format_data(data):
-#     raw_data = remove_newlines(data)
-#     formatted_data = []
-#     for timestep in range(len(raw_data)):
-#         float_data = []
-#         string_data = raw_data[timestep].split()
-#         for value in range(len(string_data)):
-#             float_data.append(float(string_data[value]))
-#         formatted_data.append(float_data)
-#     return formatted_data
-
-
 def get_ca_activation_level(ovlps, ca_size):
     ca_activation_level = []
     for i in range(len(ovlps)):
         ca_activation_level.append(sum(ovlps[i])/ca_size)  # normalize activation level
     return ca_activation_level
-
-
-# def get_rate_act_level(data, ca_size, act_threshold):
-#     act_levels = []
-#     for j in range(len(data)):
-#         act_level = 0
-#         for i in range(ca_size):
-#             if data[j][i] > act_threshold:
-#                 act_level += 1
-#         act_levels.append(act_level/ca_size)
-#     return act_levels
 
 
 def get_normalised_rate(est_rates):
@@ -82,18 +61,12 @@ def get_normalised_rate(est_rates):
     return normalised_rates
 
 
-# file = open("ca1_sample_data.txt", "r")
-# data = file.readlines()
-# file.close()
-#
-#
-# raw_potentials, raw_ca1_ovlps = get_potentials_and_ca_ovlps(data)
-#
-# potentials = format_data(raw_potentials)
-# ca1_ovlps = format_data(raw_ca1_ovlps)
-#
-# print(potentials)
-# print(ca1_ovlps)
-
-
+def string_to_float_list(string_list):
+    float_list = []
+    for i in range(len(string_list)):
+        if math.isnan(float(string_list[i])):
+            float_list.append(0)
+        else:
+            float_list.append(float(string_list[i]))
+    return float_list
 
