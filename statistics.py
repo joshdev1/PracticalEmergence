@@ -2,6 +2,7 @@ import numpy as np
 from scipy.stats import wilcoxon, ttest_ind
 from format_ca_data import string_to_float_list
 from matplotlib import pyplot as plt
+import seaborn as sns
 
 
 def subtract(L1,L2):
@@ -84,16 +85,20 @@ print("Peak Gamma Result:", ttest_ind(peak_gamma_values, control_gamma_means))
 # ax3.set_ylabel("occurrences")
 
 # boxplots for final results
-fig4, ax4 = plt.subplots(figsize=(6, 5))
-ax4.boxplot([control_psi_means, psi_means])
-ax4.set_title("Emergence")
-ax4.set_xticklabels(["Baseline", "CA ignition"])
-ax4.set_ylabel("Psi Level")
+# fig4, ax4 = plt.subplots(figsize=(6, 5))
+# ax4.boxplot([control_psi_means, psi_means])
+# ax4.set_title("Emergence", fontsize=18)
+# ax4.set_xticklabels(["Baseline", "CA ignition"], fontsize=18)
+# ax4.set_ylabel("Psi Level", fontsize=18)
+#
+#
+# fig5, ax5 = plt.subplots(figsize=(6, 5))
+# ax5.boxplot([control_gamma_means, peak_gamma_values])
+# ax5.set_title("Causal Decoupling", fontsize=18)
+# ax5.set_xticklabels(["Baseline", "CA ignition"], fontsize=18)
+# ax5.set_ylabel("Gamma Level", fontsize=18)
+# plt.show()
 
-
-fig5, ax5 = plt.subplots(figsize=(6, 5))
-ax5.boxplot([control_gamma_means, peak_gamma_values])
-ax5.set_title("Causal Decoupling")
-ax5.set_xticklabels(["Baseline", "CA ignition"])
-ax5.set_ylabel("Gamma Level")
+ax = sns.boxplot([control_psi_means, psi_means])
+ax = sns.swarmplot([control_psi_means, psi_means], color=".25")
 plt.show()
