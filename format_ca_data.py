@@ -1,5 +1,6 @@
 import math
 
+
 def get_potentials_and_ca_ovlps(data):
     raw_potentials = []
     raw_ca1_ovlps = []

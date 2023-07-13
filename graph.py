@@ -21,5 +21,5 @@ def plot_practical_criteria(timesteps, criteria_trace, criteria_name, title):
     plt.plot(range(timesteps), criteria_trace, label=criteria_name)
     plt.legend()
     plt.title(f'Practical Criteria: {title}')
-    plt.ylabel(f'value')
+    plt.ylabel(f'Normalised Levels')
     plt.xlabel('Simulation Timestep')
