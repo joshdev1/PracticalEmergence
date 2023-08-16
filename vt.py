@@ -7,9 +7,9 @@ def get_xt_window(xt_window, est_rates, counter, WINDOW_SIZE):
             xt_window[:, i] = est_rates[(counter - WINDOW_SIZE) + i]
 
 
-def get_xt(xt, xt_list, counter):
-    xt[:, 0] = xt_list[counter]
-    xt[:, 1] = xt_list[counter+1]
+def get_xt(xt, est_rates, counter):
+    xt[:, 0] = est_rates[counter]
+    xt[:, 1] = est_rates[counter+1]
 
 
 def get_vt(vt, xt, xt_window):
@@ -36,5 +36,5 @@ def get_vt_full_ca_mean(vt, xt, xt_window):
 
 
 def get_vt_trace(vt_trace, vt, total_mean_vt_trace):
-    vt_trace.append(vt[0] * 10)  # added the constant terms for better plotting
+    vt_trace.append(vt[0] * 10)  # can add constant terms for better plotting e.g * 10
     total_mean_vt_trace.append(np.mean(vt))

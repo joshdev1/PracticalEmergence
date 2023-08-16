@@ -3,17 +3,15 @@ from format_ca_data import format_data, get_normalised_rate, get_estr_and_ovlps
 import numpy as np
 from oct2py import Oct2Py
 from graph import plot_practical_criteria
-import random
 
 from vt import get_xt, get_vt_trace, get_spatial_vt
 
 oc = Oct2Py()
 oc.addpath('D:\Projects\PracticalEmergence\ReconcilingEmergences-master\ReconcilingEmergences-master')
 
-# ca = "ca6_d1_30"
-# file = open(f"data_sets/Dataset1/timelocked_data/{ca}.txt", "r")
+ca = "ca6_d1_30"
+file = open(f"data_sets/Dataset1/timelocked_data/{ca}.txt", "r")
 
-file = open(f"data_sets/Dataset1/poster_plots/ca6_d1_30_poster.txt", "r")
 data = file.readlines()
 file.close()
 
@@ -31,9 +29,9 @@ total_mean_vt_trace = []
 
 rates_level = get_normalised_rate(est_rates)
 # ca_activation_level = get_ca_activation_level(ovlps, CA_SIZE)
-# random.shuffle(est_rates)  # shuffle the data for surrogate testing/resampling
 
 psi_trace = []
+surr_psi_mean = []
 delta_trace = []
 gamma_trace = []
 counter = 0
@@ -47,14 +45,31 @@ for epoch in range(len(est_rates) - 1):
     delta = oc.EmergenceDelta(xt, vt)  # delta > 0, then V shows downward causation.
     gamma = oc.EmergenceGamma(xt, vt)  # gamma(psi > 0 and Γ = 0), then V shows causal decoupling.
 
+    surr_vt = vt
+    surr_psi = []
+    for i in range(10):
+        shuffled_xt = np.random.permutation(xt)
+        shuffled_vt = np.random.permutation(surr_vt)
+        spsi = oc.EmergencePsi(shuffled_xt, shuffled_vt)
+        surr_psi.append(spsi)
+        print(spsi)
+
+    surr_psi_mean.append(np.mean(surr_psi))
+
     psi_trace.append(psi)
     delta_trace.append(delta)
     gamma_trace.append(gamma)
 
     print(f"psi = {psi}\n delta = {delta}\n gamma = {gamma}\n epoch = {epoch}")
+    print(f"surr_psi_mean: {surr_psi_mean[epoch]}")
 
 
 print("------------\n")
+
+with open(f'data_sets/Dataset1/surrogate_data/{ca}_surr.txt', 'w') as f:
+    for line in surr_psi_mean:
+        f.write(f"{line} ")
+    f.write(f"\n")
 
 # with open(f'data_sets/Dataset1/timelocked_results/{ca}_res.txt', 'w') as f:
 #     for line in psi_trace:
@@ -72,8 +87,10 @@ print("------------\n")
 
 plt.figure(1)
 plot_practical_criteria(len(est_rates) - 1, psi_trace, "psi", "CA6")
+plot_practical_criteria(len(est_rates) - 1, surr_psi_mean, "surr_psi_mean", "CA6")
 plot_practical_criteria(len(est_rates) - 1, delta_trace, "delta", "CA6")
 plot_practical_criteria(len(est_rates) - 1, gamma_trace, "gamma", "CA6")
+# plt.plot(range(len(est_rates) - 1), total_mean_vt_trace, label='Vt (Mean membrane potential)')
 plt.plot(range(len(est_rates) - 1), rates_level[:len(est_rates) - 1], label="Estimated Firing Rates")
 # plt.plot(range(len(ovlps) - 1), ca_activation_level[:len(ovlps) - 1], label="ca activation (ovlps)")
 plt.legend()
